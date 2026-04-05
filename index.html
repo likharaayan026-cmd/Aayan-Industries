@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Aayan Industries</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#f5f8ff;color:#222;overflow-x:hidden}
+
+/* HEADER */
+header{
+  position:sticky;top:0;
+  background:#fff;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 5px 15px rgba(0,0,0,.05);
+}
+header img{width:55px}
+header button{
+  border:2px solid #2563eb;
+  background:transparent;
+  color:#2563eb;
+  padding:10px 18px;
+  border-radius:30px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+header button:hover{
+  background:#2563eb;
+  color:#fff;
+  transform:scale(1.05);
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:70px 20px;
+  animation:fadeUp 1s ease;
+}
+.hero img{width:130px;margin-bottom:20px}
+.hero h1{font-size:32px;font-weight:700}
+.hero span{color:#2563eb}
+.hero p{opacity:.7;margin:15px 0 25px}
+.hero button{
+  background:#2563eb;
+  color:#fff;
+  border:none;
+  padding:14px 30px;
+  border-radius:30px;
+  cursor:pointer;
+  transition:.3s;
+}
+.hero button:hover{transform:scale(1.08)}
+
+section{padding:60px 20px}
+.title{text-align:center;font-size:26px;font-weight:700;margin-bottom:35px}
+
+/* SERVICES */
+.services{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:20px;
+}
+.card{
+  background:#fff;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+  transition:.4s;
+}
+.card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+.card h3{margin:15px 0}
+
+/* ABOUT */
+.about{
+  max-width:800px;
+  margin:auto;
+  background:#fff;
+  padding:35px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+  line-height:1.8;
+  text-align:center;
+}
+
+/* REVIEWS */
+.reviews{
+  display:flex;
+  gap:20px;
+  overflow-x:auto;
+  padding-bottom:10px;
+}
+.review{
+  min-width:260px;
+  background:#fff;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+  transition:.3s;
+}
+.review:hover{transform:scale(1.05)}
+
+/* FORM */
+form{
+  max-width:550px;
+  margin:auto;
+  background:#fff;
+  padding:35px;
+  border-radius:25px;
+  box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+input,textarea{
+  width:100%;
+  padding:14px;
+  margin-bottom:15px;
+  border-radius:14px;
+  border:1.5px solid #ddd;
+  font-size:14px;
+}
+textarea{height:120px;resize:none}
+form button{
+  width:100%;
+  padding:15px;
+  border-radius:30px;
+  border:2px solid #2563eb;
+  background:transparent;
+  color:#2563eb;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+form button:hover{
+  background:#2563eb;
+  color:#fff;
+  transform:scale(1.05);
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  opacity:.6;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px)}
+  to{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="logo.png">
+  <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+    Start Project
+  </button>
+</header>
+
+<section class="hero">
+  <img src="logo.png">
+  <h1>I’m <span>Aayan</span></h1>
+  <p>Professional App Developer • Web Developer • Poster Designer</p>
+  <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+    Hire Me
+  </button>
+</section>
+
+<section>
+  <h2 class="title">My Services</h2>
+  <div class="services">
+    <div class="card">
+      <h3>📱 App Development</h3>
+      <p>Modern Android & Web Applications with smooth UI</p>
+    </div>
+    <div class="card">
+      <h3>💻 Web Development</h3>
+      <p>Responsive, fast & animated websites</p>
+    </div>
+    <div class="card">
+      <h3>🎨 Poster Design</h3>
+      <p>Creative social media & marketing posters</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 class="title">About Me</h2>
+  <div class="about">
+    I am a passionate <b>App Developer</b>, <b>Web Developer</b> and 
+    <b>Poster Designer</b>. I create modern, animated and high-performing
+    digital products for businesses and creators.
+    <br><br>
+     Contact Details: <b>likharaayan026@gmail.com</b>
+  </div>
+</section>
+
+<section>
+  <h2 class="title">Client Reviews</h2>
+  <div class="reviews">
+    <div class="review">⭐⭐⭐⭐⭐<br>Outstanding UI & smooth animations!</div>
+    <div class="review">⭐⭐⭐⭐⭐<br>Professional & fast developer.</div>
+    <div class="review">⭐⭐⭐⭐⭐<br>Best experience working together.</div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="title">Start Your Project</h2>
+
+  <form id="projectForm">
+    <input id="name" placeholder="Your Name" required>
+    <input id="email" type="email" placeholder="Your Email" required>
+    <input id="mobile" type="tel" placeholder="Mobile Number" required>
+    <input id="service" placeholder="Service (App / Website / Poster)" required>
+    <textarea id="details" placeholder="Project Details" required></textarea>
+    <button type="submit">Send Request</button>
+  </form>
+</section>
+
+<footer>© 2026 Aayan Industries</footer>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBt3iYcR4SijEJqtrBlH8mNr292vakgJFQ",
+  authDomain: "figo-movies.firebaseapp.com",
+  databaseURL: "https://figo-movies-default-rtdb.firebaseio.com",
+  projectId: "figo-movies",
+  storageBucket: "figo-movies.firebasestorage.app",
+  messagingSenderId: "425238806262",
+  appId: "1:425238806262:web:7d23814e4b550695bb76d7"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+document.getElementById("projectForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    mobile: document.getElementById("mobile").value,
+    service: document.getElementById("service").value,
+    details: document.getElementById("details").value,
+    time: new Date().toLocaleString()
+  };
+
+  database.ref("projects").push(data)
+    .then(()=>{
+      alert("✅ Request Sent Successfully! Our team contact you soon 🚀");
+      document.getElementById("projectForm").reset();
+    })
+    .catch(err=>{
+      alert("❌ Error: " + err.message);
+      console.error(err);
+    });
+});
+</script>
+
+</body>
+</html>
