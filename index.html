@@ -11,6 +11,13 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("8dI5JoM4j0_n70Tb-");
+   })();
+</script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 body{background:#f8fafc;color:#1e293b;overflow-x:hidden}
@@ -618,8 +625,24 @@ document.getElementById("projectForm").addEventListener("submit", function(e){
     time: new Date().toLocaleString()
   };
 
+  // 1. Save to Firebase
   database.ref("projects").push(finalData)
     .then(() => {
+      // 2. Automated Auto-Reply Email via EmailJS
+      const templateParams = {
+        user_name: nameVal,
+        user_email: emailVal,
+        service: serviceVal,
+        details: detailsVal
+      };
+
+      emailjs.send('service_t0zbe49', 'template_ggdmd96', templateParams)
+        .then(function(response) {
+            console.log('Automated Email sent successfully!', response.status, response.text);
+        }, function(error) {
+            console.log('Automated Email failed...', error);
+        });
+
       localStorage.setItem("sub_email_" + emailVal, now.toString());
       localStorage.setItem("sub_mobile_" + mobileVal, now.toString());
       
