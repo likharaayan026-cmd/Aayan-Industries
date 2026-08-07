@@ -239,13 +239,13 @@ form button:hover{
 .form-error-msg {
   color: #dc2626;
   font-size: 13px;
-  margin-top: -10px;
+  margin-top: -12px;
   margin-bottom: 15px;
   display: none;
   font-weight: 500;
 }
 
-/* CUSTOM POPUP */
+/* CUSTOM ANIMATED POPUP */
 .popup-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -271,7 +271,7 @@ form button:hover{
   border-radius: 24px;
   text-align: center;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  transform: scale(0.8) translateY(30px);
+  transform: scale(0.7) translateY(40px);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .popup-overlay.active .popup-card {
@@ -281,7 +281,7 @@ form button:hover{
   width: 80px; height: 80px;
   background: #dcfce7;
   color: #16a34a;
-  font-size: 36px;
+  font-size: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -290,10 +290,10 @@ form button:hover{
   animation: popCheck 0.6s ease 0.2s both;
 }
 .popup-card h2 {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .popup-card p {
   color: #64748b;
@@ -302,18 +302,18 @@ form button:hover{
   margin-bottom: 25px;
 }
 .popup-card button {
-  background: #16a34a;
+  background: #2563eb;
   color: #fff;
   border: none;
   padding: 12px 40px;
   font-weight: 600;
   border-radius: 30px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
   transition: 0.2s;
 }
 .popup-card button:hover {
-  background: #15803d;
+  background: #1d4ed8;
   transform: scale(1.05);
 }
 
@@ -405,7 +405,7 @@ footer{
   <form id="projectForm">
     <input id="name" placeholder="Your Name" required>
     
-    <input id="email" type="email" placeholder="Your Email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" title="Please enter a valid Gmail address ending with @gmail.com" required>
+    <input id="email" type="email" placeholder="Your Email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" title="Please enter a valid email address" required>
     <div id="emailError" class="form-error-msg"></div>
     
     <input id="mobile" type="tel" placeholder="Mobile Number" pattern="[0-9]{10}" title="Please enter exactly 10 digits" maxlength="10" required>
@@ -425,10 +425,10 @@ footer{
 
 <div class="popup-overlay" id="successPopup">
   <div class="popup-card">
-    <div class="popup-icon">🎉</div>
-    <h2>Congratulations!</h2>
-    <p>Your project request has been submitted successfully. Our development team will review the specifications and reach out to you within the next 24 hours! 🚀</p>
-    <button onclick="closePopup()">Done</button>
+    <div class="popup-icon">✓</div>
+    <h2>Request Submitted!</h2>
+    <p>Your request has been submitted successfully. Please wait 24 hours, our team will contact you soon! 🚀</p>
+    <button onclick="closePopup()">OK</button>
   </div>
 </div>
 
@@ -456,15 +456,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// REAL NOTIFICATION PERMISSION POPUP ON FIRST LOAD
+// NOTIFICATION PERMISSION
 window.addEventListener('load', () => {
   if ('Notification' in window) {
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
-        console.log('Real system notification channel allowed successfully!');
         initializeFCMToken();
-      } else if (permission === 'denied') {
-        console.log('User denied notification permissions.');
       }
     });
   }
@@ -475,14 +472,13 @@ function initializeFCMToken() {
     const messaging = firebase.messaging();
     messaging.getToken().then((token) => {
       if (token) {
-        console.log('FCM Registration Token generated:', token);
+        console.log('FCM Token:', token);
       }
     }).catch((err) => {
-      console.log('Token acquisition exception: ', err);
+      console.log('Token error:', err);
     });
 
     messaging.onMessage((payload) => {
-      console.log('Foreground message tracking event:', payload);
       if (Notification.permission === "granted") {
         new Notification(payload.notification.title, {
           body: payload.notification.body,
@@ -491,11 +487,11 @@ function initializeFCMToken() {
       }
     });
   } catch (e) {
-    console.log("FCM interface parameters initialized.");
+    console.log("FCM Exception.");
   }
 }
 
-// FETCH REVIEWS FROM FIREBASE
+// FETCH REVIEWS
 window.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('reviewsContainer');
   
@@ -560,7 +556,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Form Handlers
+// FORM HANDLER
 document.getElementById("projectForm").addEventListener("submit", function(e){
   e.preventDefault();
 
@@ -576,19 +572,22 @@ document.getElementById("projectForm").addEventListener("submit", function(e){
   emailError.style.display = "none";
   mobileError.style.display = "none";
 
+  // Check ending with @gmail.com
   if (!emailVal.endsWith("@gmail.com")) {
-    emailError.innerText = "❌ Only official G-Mail are allowed.";
+    emailError.innerText = "❌ Please enter a valid email address.";
     emailError.style.display = "block";
     return;
   }
+  
+  // Check 10-digit mobile number
   if (mobileVal.length !== 10 || isNaN(mobileVal)) {
-    mobileError.innerText = "❌ Mobile number must be exactly 10 numeric digits.";
+    mobileError.innerText = "❌ Please enter a valid 10-digit mobile number.";
     mobileError.style.display = "block";
     return;
   }
 
   const now = new Date().getTime();
-  const lockTimeLimit = 24 * 60 * 60 * 1000;
+  const lockTimeLimit = 24 * 60 * 60 * 1000; // 24 Hours in milliseconds
 
   const lastSubmissionEmail = localStorage.getItem("sub_email_" + emailVal);
   const lastSubmissionMobile = localStorage.getItem("sub_mobile_" + mobileVal);
@@ -597,7 +596,7 @@ document.getElementById("projectForm").addEventListener("submit", function(e){
     const timePassed = now - parseInt(lastSubmissionEmail);
     if (timePassed < lockTimeLimit) {
       const hoursLeft = Math.ceil((lockTimeLimit - timePassed) / (1000 * 60 * 60));
-      emailError.innerText = `❌ Order Limit Exceeded! You can request again after ${hoursLeft} hours.`;
+      emailError.innerText = `❌ Request limit reached. Please wait ${hoursLeft} hours before submitting again.`;
       emailError.style.display = "block";
       return;
     }
@@ -607,7 +606,7 @@ document.getElementById("projectForm").addEventListener("submit", function(e){
     const timePassed = now - parseInt(lastSubmissionMobile);
     if (timePassed < lockTimeLimit) {
       const hoursLeft = Math.ceil((lockTimeLimit - timePassed) / (1000 * 60 * 60));
-      mobileError.innerText = `❌ Number locked! You can request again after ${hoursLeft} hours.`;
+      mobileError.innerText = `❌ Request limit reached. Please wait ${hoursLeft} hours before submitting again.`;
       mobileError.style.display = "block";
       return;
     }
@@ -643,6 +642,7 @@ document.getElementById("projectForm").addEventListener("submit", function(e){
             console.log('Automated Email failed...', error);
         });
 
+      // Save submission time to block repeated requests for 24 hours
       localStorage.setItem("sub_email_" + emailVal, now.toString());
       localStorage.setItem("sub_mobile_" + mobileVal, now.toString());
       
@@ -653,7 +653,7 @@ document.getElementById("projectForm").addEventListener("submit", function(e){
       document.getElementById("submitBtn").disabled = false;
     })
     .catch(err => {
-      alert("❌ Firebase Storage Error: " + err.message);
+      alert("❌ Submission Error: " + err.message);
       document.getElementById("submitBtn").innerText = "Send Request";
       document.getElementById("submitBtn").disabled = false;
     });
