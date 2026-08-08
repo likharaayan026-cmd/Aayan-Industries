@@ -14,7 +14,8 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script type="text/javascript">
    (function(){
-      emailjs.init("8dI5JoM4j0_n70Tb-");
+      // Kotha Public Key update cheyabaddadi
+      emailjs.init("JBH6kTf1FxXaRsUXW");
    })();
 </script>
 
@@ -635,7 +636,8 @@ document.getElementById("projectForm").addEventListener("submit", function(e){
         details: detailsVal
       };
 
-      emailjs.send('service_t0zbe49', 'template_ggdmd96', templateParams)
+      // Service ID & Template ID
+      emailjs.send('service_ku6z0co', 'template_ci4feei', templateParams)
         .then(function(response) {
             console.log('Automated Email sent successfully!', response.status, response.text);
         }, function(error) {
